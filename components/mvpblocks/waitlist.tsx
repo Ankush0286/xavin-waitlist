@@ -15,6 +15,7 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  MotionValue,
 } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
 import { Particles } from '@/components/ui/particles';
@@ -50,7 +51,10 @@ const InteractiveCard = ({ children, className }: PropsWithChildren<{ className?
 
   const glareX = useTransform(mouseX, [-0.5, 0.5], ['100%', '0%']);
   const glareY = useTransform(mouseY, [-0.5, 0.5], ['100%', '0%']);
-  const glareOpacity = useTransform([mouseX, mouseY], ([x, y]) => (Math.abs(x) > 0 || Math.abs(y) > 0 ? 1 : 0));
+  const glareOpacity = useTransform(
+  [mouseX, mouseY] as [MotionValue<number>, MotionValue<number>],
+  ([x, y]) => ((x !== 0 || y !== 0) ? 1 : 0)
+);
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -131,13 +135,13 @@ export default function WaitlistPage() {
         refresh
       />
 
-      <div className="relative z-[100] mx-auto max-w-2xl px-4 py-16 text-center">
+      <div className="relative z-100 mx-auto max-w-2xl px-4 py-16 text-center">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="border-primary/10 from-primary/15 to-primary/5 mb-8 inline-flex items-center gap-2 rounded-full border bg-gradient-to-r px-4 py-2 backdrop-blur-sm"
+          className="border-primary/10 from-primary/15 to-primary/5 mb-8 inline-flex items-center gap-2 rounded-full border bg-linear-to-r px-4 py-2 backdrop-blur-sm"
         >
           <Image src="/image.png" alt="logo" className="spin h-6 w-6" width={24} height={24} />
           <span className="text-sm font-medium">Xavin</span>
@@ -154,12 +158,12 @@ export default function WaitlistPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
           className={cn(
-            'from-foreground via-foreground/80 to-foreground/40 mb-4 cursor-crosshair bg-gradient-to-b bg-clip-text text-4xl font-bold leading-snug text-transparent sm:text-7xl',
+            'from-foreground via-foreground/80 to-foreground/40 mb-4 cursor-crosshair bg-linear-to-b bg-clip-text text-4xl font-bold leading-snug text-transparent sm:text-7xl',
             brico.className,
           )}
         >
           Join the{' '}
-          <span className="bg-gradient-to-b from-blue-400 to-blue-600 bg-clip-text text-transparent">
+          <span className="bg-linear-to-b from-blue-400 to-blue-600 bg-clip-text text-transparent">
             Waitlist
           </span>
         </motion.h1>
@@ -243,7 +247,7 @@ export default function WaitlistPage() {
                   transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   className="group focus:ring-primary/50 relative overflow-hidden rounded-lg border border-primary/20 bg-white/5 px-8 py-4 text-lg font-semibold text-white shadow-[0_0_20px_hsl(var(--primary)/0.3)] backdrop-blur-md transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)] focus:ring-2 focus:outline-none active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <span className="absolute inset-0 block w-full -translate-x-full transform bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 ease-out group-hover:translate-x-full"></span>
+                  <span className="absolute inset-0 block w-full -translate-x-full transform bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 ease-out group-hover:translate-x-full"></span>
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     {state.submitting ? 'Joining...' : 'Join Waitlist'}
                     <Sparkles className="h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
@@ -260,7 +264,7 @@ export default function WaitlistPage() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.6 }}
                 className={cn(
-                  'border-primary/20 from-primary/10 to-primary/10 text-primary flex-1 cursor-pointer rounded-xl border bg-gradient-to-r via-transparent px-6 py-4 font-medium backdrop-blur-md transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:brightness-125',
+                  'border-primary/20 from-primary/10 to-primary/10 text-primary flex-1 cursor-pointer rounded-xl border bg-linear-to-r via-transparent px-6 py-4 font-medium backdrop-blur-md transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] active:brightness-125',
                   resolvedTheme === 'dark' ? 'glass' : 'glass2',
                 )}
               >
@@ -286,7 +290,7 @@ export default function WaitlistPage() {
                 initial={{ scale: 0, x: -10 }}
                 animate={{ scale: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: 1 + i * 0.2 }}
-                className="border-background from-primary size-10 rounded-full border-2 bg-gradient-to-r to-blue-500 p-[2px]"
+                className="border-background from-primary size-10 rounded-full border-2 bg-linear-to-r to-blue-500 p-0.5"
               >
                 <div className="overflow-hidden rounded-full">
                   <Image
