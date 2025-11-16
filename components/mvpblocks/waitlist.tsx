@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useRef } from 'react';
-import { useEffect, useState } from 'react';
+import React from 'react';
+import Image from 'next/image'; // Import the Next.js Image component
 import {
   ArrowRight,
   Sparkles,
@@ -37,7 +37,7 @@ const users = [
 ];
 
 // Utility function used by the component
-const cn2 = (...classes: any[]) => classes.filter(Boolean).join(' ');
+const cn2 = (...classes: unknown[]) => classes.filter(Boolean).join(' ');
 
 const InteractiveCard = ({ children, className }: PropsWithChildren<{ className?: string }>) => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -139,7 +139,7 @@ export default function WaitlistPage() {
           transition={{ duration: 0.5 }}
           className="border-primary/10 from-primary/15 to-primary/5 mb-8 inline-flex items-center gap-2 rounded-full border bg-gradient-to-r px-4 py-2 backdrop-blur-sm"
         >
-          <img src="/image.png" alt="logo" className="spin h-6 w-6" />
+          <Image src="/image.png" alt="logo" className="spin h-6 w-6" width={24} height={24} />
           <span className="text-sm font-medium">Xavin</span>
           <motion.div
             animate={{ x: [0, 5, 0] }}
@@ -289,7 +289,7 @@ export default function WaitlistPage() {
                 className="border-background from-primary size-10 rounded-full border-2 bg-gradient-to-r to-blue-500 p-[2px]"
               >
                 <div className="overflow-hidden rounded-full">
-                  <img
+                  <Image
                     src={user.imgUrl}
                     alt="Avatar"
                     className="rounded-full transition-all duration-300 hover:scale-110 hover:rotate-6"
